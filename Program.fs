@@ -482,15 +482,20 @@ let main args =
                             (fun (username, password) ctx ->
                                 task {
                                     if password.Length >= 12 then
-                                        let user = Auth.registerUser Team username password
-                                        match! state.TaskDispatch (UserRegister user) with
-                                        | Ok () ->
-                                            let cp = Auth.userToClaimsPrincipal user
-                                            return! ctx |> Response.signInAndRedirect CookieAuthenticationDefaults.AuthenticationScheme cp "/"
-                                        | Error _ ->
+                                        if username.Length <= 20 then
+                                            let user = Auth.registerUser Team username password
+                                            match! state.TaskDispatch (UserRegister user) with
+                                            | Ok () ->
+                                                let cp = Auth.userToClaimsPrincipal user
+                                                return! ctx |> Response.signInAndRedirect CookieAuthenticationDefaults.AuthenticationScheme cp "/"
+                                            | Error _ ->
+                                                return! ctx
+                                                    |> Response.withStatusCode 400
+                                                    |> Response.ofHtmlMasterWithCsrf "Registreer" (fun token -> [ registerForm (Error username, Ok "", Ok ()) token ])
+                                        else
                                             return! ctx
-                                                |> Response.withStatusCode 400
-                                                |> Response.ofHtmlMasterWithCsrf "Registreer" (fun token -> [ registerForm (Error username, Ok "", Ok ()) token ])
+                                            |> Response.withStatusCode 400
+                                            |> Response.ofHtmlMasterWithCsrf "Registreer" (fun token -> [ registerForm (Error username, Ok "", Error "De teamnaam mag niet langer zijn dan 20 tekens.") token ])
                                     else
                                         return! ctx
                                             |> Response.withStatusCode 400
