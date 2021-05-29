@@ -1,0 +1,17 @@
+.editorconfig
+data/
+.vs/
+.vscode/
+
+# directories
+**/bin/
+**/obj/
+**/out/
+
+# files
+Dockerfile*
+**/*.trx
+**/*.md
+**/*.ps1
+**/*.cmd
+**/*.sh
