@@ -71,6 +71,7 @@ let master (ctx: HttpContext) title content =
             Elem.title [] [ Text.rawf "%s - SimpleCTF" title ]
             Elem.link [ Attr.rel "stylesheet"; Attr.href "https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" ]
             Elem.link [ Attr.rel "stylesheet"; Attr.href "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" ]
+            Elem.link [ Attr.rel "stylesheet"; Attr.href "https://unpkg.com/bulma-prefers-dark" ]
             Text.comment "👋 Je gaat hier geen flags vinden. Helaas."
         ]
         Elem.body [] [
