@@ -101,7 +101,7 @@ let update msg state =
                 , Ok ()
             else
                 { state with
-                    Score = state.Score |> Map.update username 0 ((-) 1 >> max 0) }
+                    Score = state.Score |> Map.update username 0 (fun score -> max 0 (score - 1)) }
                 , Error "Incorrect flag"
 
 let createStore path = new StateStore<State, Event, Result<unit, string>>(path, init, update)
