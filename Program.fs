@@ -441,7 +441,10 @@ let main args =
                                                 | Error _ ->
                                                     return! ctx
                                                         |> Response.withStatusCode 400
-                                                        |> Response.ofHtmlMasterWithCsrf "Challenges" (renderChallengeList state.State (Some (challenge.Id, flag)) ctx >> List.singleton)
+                                                        |> Response.ofHtmlMasterWithCsrf "Challenges" (fun token -> [
+                                                            renderHome state.State ctx
+                                                            renderChallengeList state.State (Some (challenge.Id, flag)) ctx token
+                                                        ])
                                             | None ->
                                                 return! ctx |> Response.withStatusCode 403 |> Response.ofPlainText "Not authenticated"
                                         }
